@@ -142,13 +142,13 @@ class Destalinator(WithLogger, WithConfig):
             self.logger.debug("Not archiving #%s because it's in ignore_channels", channel_name)
             return
 
+        self.logger.debug("Announcing channel closure in #%s", channel_name)
+        members = self.slacker.get_channel_member_names(channel_name)
+        say = "Members at archiving are {}".format(", ".join(sorted(members)))
+        self.logger.debug("Telling channel #%s: %s", channel_name, say)
         if self.config.activated:
-            self.logger.debug("Announcing channel closure in #%s", channel_name)
             self.post_marked_up_message(channel_name, self.closure_text, message_type='channel_archive')
 
-            members = self.slacker.get_channel_member_names(channel_name)
-            say = "Members at archiving are {}".format(", ".join(sorted(members)))
-            self.logger.debug("Telling channel #%s: %s", channel_name, say)
             self.post_marked_up_message(channel_name, say, message_type='channel_archive_members')
 
             self.action("Archiving channel #{}".format(channel_name))
