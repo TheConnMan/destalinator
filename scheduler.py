@@ -45,6 +45,10 @@ def destalinate_job():
     logging.info("END: destalinate_job")
 
 
+def lambda_job(event, context):
+    destalinate_job()
+
+
 def main():
     # Use RUN_ONCE to only run the destalinate job once immediately
     if get_config().run_once:
